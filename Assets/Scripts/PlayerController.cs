@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private int coinCount;
     [SerializeField]
-    private UI_Manager uI_Manager; 
+    private UI_Manager uI_Manager;
+    [SerializeField]
+    private int lives = 3; 
 
     private void Start()
     {
@@ -26,6 +28,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("No reference to UI Manager"); 
         }
+
+        uI_Manager.UpdateLivesInfo(lives);
     }
 
     private void Update()
