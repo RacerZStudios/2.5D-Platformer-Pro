@@ -11,11 +11,21 @@ public class PlayerController : MonoBehaviour
     private float gravity = 1.5f;
     private float jumpHeight = 120;
     private float yVelocity;
-    private bool canDoubleJump; 
+    private bool canDoubleJump;
+    [SerializeField]
+    private int coinCount;
+    [SerializeField]
+    private UI_Manager uI_Manager; 
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>(); 
+        controller = GetComponent<CharacterController>();
+        uI_Manager = GameObject.Find("Canvas").GetComponent<UI_Manager>(); 
+
+        if(uI_Manager == null)
+        {
+            Debug.LogError("No reference to UI Manager"); 
+        }
     }
 
     private void Update()
@@ -52,5 +62,11 @@ public class PlayerController : MonoBehaviour
 
         velocity.y = yVelocity; 
         controller.Move(velocity * Time.deltaTime); 
+    }
+
+    public void AddCoins(int coin)
+    {
+        coinCount++;
+        uI_Manager.UpdateCoinInfo(coinCount); 
     }
 }

@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI; 
 using UnityEngine;
 
 public class UI_Manager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private Text coinText; 
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateCoinInfo(int coin)
     {
-        
+        coinText.text += "/ " + coin.ToString() + "/ "; 
     }
 }
