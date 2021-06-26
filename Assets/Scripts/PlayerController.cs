@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement; 
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private float speed = 5;
     [SerializeField]
     private float gravity = 1.5f;
-    private float jumpHeight = 80;
+    private float jumpHeight = 60;
     private float yVelocity;
     private bool canDoubleJump;
     [SerializeField]
@@ -72,5 +73,16 @@ public class PlayerController : MonoBehaviour
     {
         coinCount++;
         uI_Manager.UpdateCoinInfo(coinCount); 
+    }
+
+    public void TakeDamage()
+    {
+        lives--;
+        uI_Manager.UpdateLivesInfo(lives); 
+
+        if(lives < 1)
+        {
+            SceneManager.LoadScene(0); 
+        }
     }
 }
