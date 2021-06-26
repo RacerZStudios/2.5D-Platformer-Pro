@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private float speed = 5;
     [SerializeField]
     private float gravity = 1.5f;
-    private float jumpHeight = 120;
+    private float jumpHeight = 80;
     private float yVelocity;
     private bool canDoubleJump;
     [SerializeField]
