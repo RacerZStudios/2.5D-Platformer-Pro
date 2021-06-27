@@ -10,15 +10,21 @@ public class My_PlayerController : MonoBehaviour
     private float speed = 5;
     [SerializeField]
     private float gravity = 1.5f;
-    private float jumpHeight = 60;
+    [SerializeField]
+    private float jumpHeight = 45;
+    [SerializeField]
     private float yVelocity;
     private bool canDoubleJump;
+    private bool canWallJump; 
     [SerializeField]
     private int coinCount;
     [SerializeField]
     private My_UI_Manager uI_Manager;
     [SerializeField]
-    private int lives = 3; 
+    private int lives = 3;
+    private Vector3 direction;
+    private Vector3 velocity;
+    private Vector3 wallSurfaceNormal; 
 
     private void Start()
     {
@@ -36,23 +42,23 @@ public class My_PlayerController : MonoBehaviour
     private void Update()
     {
         float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-
-        Vector3 direction = new Vector3(x, y, 0);
-
-        // velocity = direction * speed 
-        Vector3 velocity = direction * speed; 
 
         if(controller.isGrounded == true)
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            canWallJump = true; 
+            direction = new Vector3(x, 0, 0);
+            // velocity = direction * speed 
+            velocity = direction * speed;
+
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 yVelocity = jumpHeight;
+                canDoubleJump = true; 
             }
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && canWallJump == false)
             {
                 if(canDoubleJump == true)
                 {
@@ -61,12 +67,28 @@ public class My_PlayerController : MonoBehaviour
                 }
             }
 
+            if(Input.GetKeyDown(KeyCode.Space) && canWallJump == true)
+            {
+                yVelocity = jumpHeight; 
+                // velocity = surface normal of the wall 
+                velocity = wallSurfaceNormal * speed; 
+            }
             yVelocity -= gravity;
-            canDoubleJump = true; 
         }
 
         velocity.y = yVelocity; 
         controller.Move(velocity * Time.deltaTime); 
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit) // detect hit info from ray point and normal 
+    {
+        // if not grounded && touching wall
+        if(controller.isGrounded == false && hit.transform.tag == "Wall")
+        {
+            Debug.DrawRay(hit.point, hit.normal, Color.cyan);
+            wallSurfaceNormal = hit.normal; 
+            canWallJump = true; 
+        }
     }
 
     public void AddCoins(int coin)
