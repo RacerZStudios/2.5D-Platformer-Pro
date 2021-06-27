@@ -29,16 +29,20 @@ public class Elevator_Panel : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            if(Input.GetKeyDown(KeyCode.E) && /*coin count >= 4*/ other.GetComponent<My_PlayerController>().CoinCount() >= requiredCoins)
+            if (Input.GetKey(KeyCode.E) && /*coin count >= 4*/ other.GetComponent<My_PlayerController>().CoinCount() >= requiredCoins)
             {
-                if(elevatorCalled == true)
+                if (elevatorCalled == true)
                 {
                     // call elevator  
-                    elevatorButton.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+                    elevatorButton.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+                    elevatorCalled = false; 
                 }
-
-
-                elevator.CallElevator(); 
+                else 
+                {
+                    elevatorButton.GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+                    elevatorCalled = true; 
+                }
+                elevator.CallElevator();
             }
         }
     }

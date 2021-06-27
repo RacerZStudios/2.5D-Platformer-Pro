@@ -7,9 +7,9 @@ public class Elevator : MonoBehaviour
     [SerializeField]
     private bool movingDown;
     [SerializeField]
-    private Transform origin;
-    [SerializeField]
     private Transform target;
+    [SerializeField]
+    private Transform origin;
     [SerializeField]
     private float speed = 1.5f; 
 
@@ -26,13 +26,29 @@ public class Elevator : MonoBehaviour
         // reverse 
         // current pos = MoveTowards target 
 
-        if(movingDown == true)
+        if (movingDown == true)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime); 
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
         }
-        else if(movingDown == false)
+        else if (movingDown == false)
         {
             transform.position = Vector3.MoveTowards(transform.position, origin.transform.position, speed * Time.deltaTime);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Player")
+        {
+            other.transform.parent = this.transform; 
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            other.transform.parent = null;
         }
     }
 }
