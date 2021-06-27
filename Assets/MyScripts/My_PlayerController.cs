@@ -75,6 +75,11 @@ public class My_PlayerController : MonoBehaviour
         uI_Manager.UpdateCoinInfo(coinCount); 
     }
 
+    public int CoinCount() // call coin count to get value 
+    {
+        return coinCount; 
+    }
+
     public void TakeDamage()
     {
         lives--;
