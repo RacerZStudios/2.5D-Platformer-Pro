@@ -24,7 +24,9 @@ public class My_PlayerController : MonoBehaviour
     private int lives = 3;
     private Vector3 direction;
     private Vector3 velocity;
-    private Vector3 wallSurfaceNormal; 
+    private Vector3 wallSurfaceNormal;
+    [SerializeField]
+    private float pushForce = 15; 
 
     private void Start()
     {
@@ -88,6 +90,26 @@ public class My_PlayerController : MonoBehaviour
             Debug.DrawRay(hit.point, hit.normal, Color.cyan);
             wallSurfaceNormal = hit.normal; 
             canWallJump = true; 
+        }
+
+        // check for moving box 
+        if(controller.isGrounded == true && hit.transform.tag == "MoveBox")
+        {
+            Rigidbody rb = hit.collider.attachedRigidbody;
+            rb.isKinematic = false; 
+            if(rb == null || rb.isKinematic)
+            {
+                return; 
+            }
+
+            if(hit.moveDirection.y < -0.2f)
+            {
+                return; 
+            }
+
+            Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, 0); 
+
+            rb.velocity = pushDir * pushForce;  
         }
     }
 
