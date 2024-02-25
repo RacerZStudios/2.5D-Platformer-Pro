@@ -47,8 +47,7 @@ public class My_PlayerController : MonoBehaviour
 
         if(controller.isGrounded == true)
         {
-            canWallJump = true; 
-            direction = new Vector3(x, 0, 0);
+            direction = new Vector3(x, 0, 0) * speed;
             // velocity = direction * speed 
             velocity = direction * speed;
 
@@ -60,7 +59,7 @@ public class My_PlayerController : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space) && canWallJump == false)
+            if (Input.GetKeyDown(KeyCode.Space) /*&& canWallJump == false*/)
             {
                 if(canDoubleJump == true)
                 {
@@ -79,7 +78,10 @@ public class My_PlayerController : MonoBehaviour
         }
 
         velocity.y = yVelocity; 
-        controller.Move(velocity * Time.deltaTime); 
+        if(controller.enabled)
+        {
+            controller.Move(velocity * Time.deltaTime);
+        } 
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit) // detect hit info from ray point and normal 
